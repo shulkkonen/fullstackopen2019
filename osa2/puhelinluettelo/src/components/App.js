@@ -8,7 +8,7 @@ const App = () => {
   const [persons, setPersons] = useState([]);
   const [newName, setNewName] = useState("");
   const [newNumber, setNewNumber] = useState("");
-  const [notifMessage, setNotifMessage] = useState("No notifications");
+  const [notifMessage, setNotifMessage] = useState(null);
 
   useEffect(() => {
     Notes.getAll().then(initialNotes => {
@@ -27,10 +27,11 @@ const App = () => {
   };
 
   const removePerson = name => {
-    if (window.confirm("Remove " + name + "?")) {
+    const element = persons.find(element => element.id === name)
+    if (window.confirm(`Remove ${element.name}?`)) {
       Notes.remove(name);
       setPersons(persons.filter(person => person.id !== name));
-      setNotifMessage("Removed " + name);
+      setNotifMessage(`Removed ${element.name}`);
       setTimeout(() => {
         setNotifMessage(null);
       }, 3000);
